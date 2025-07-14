@@ -172,4 +172,4 @@ Due to stack aligment issues, i didn't jump to `0x00401262` but to `0x00401267` 
 
 ### Proof of Concept
 
-![Alt text]([image-url-or-path](https://github.com/MohandAcherir/Writeups/blob/main/l3akCTF/Screenshot%20from%202025-07-12%2015-50-39.png))
+![PoC](https://github.com/MohandAcherir/Writeups/blob/main/l3akCTF/Screenshot%20from%202025-07-12%2015-50-39.png)
