@@ -1,6 +1,7 @@
 # L3akCTF - Safe Gets
  
-**Tags:** [Pwn, Rev, BoF]
+**Points:** 50
+**Category:** Pwn
 
 ---
 
