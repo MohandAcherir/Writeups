@@ -1,6 +1,5 @@
-# [Your Blog Post Title]
-
-**Date:** [2025-07-13]  
+# L3akCTF - Safe Gets
+ 
 **Tags:** [Pwn, Rev, BoF]
 
 ---
