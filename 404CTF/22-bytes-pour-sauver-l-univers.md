@@ -13,7 +13,7 @@
 
 ## Provided files:
 - **chall** : ELF binary that receives strings and simply outputs them.
-![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/Screenshot%20from%202025-05-28%2016-43-38.png)
+![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/Screenshot%20from%202025-07-15%2012-19-28.png)
 
 
 ## The binary's code:
