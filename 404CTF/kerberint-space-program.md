@@ -18,7 +18,7 @@
 
 Protections on the binary:
 
-![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/pics/Screenshot%20from%202025-07-15%2012-19-28.png)
+![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/pics/Screenshot%20from%202025-05-25%2023-25-15.png)
 
 ## The binary's code:
 
@@ -180,7 +180,7 @@ p.sendline(b"6") # Trigger
 ```
 `free("/bin/sh")` = `system("/bin/sh")` which gives a shell.
 
-![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/pics/Screenshot%20from%202025-07-15%2012-19-28.png)
+![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/pics/Screenshot%20from%202025-07-16%2001-42-43.png)
 
 
 ### Proof of Concept
