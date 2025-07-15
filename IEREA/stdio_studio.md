@@ -220,4 +220,4 @@ for i in range(20, 111):
 
 ```
 
-![pOc](https://github.com/MohandAcherir/Writeups/blob/main/IEREA/Screenshot%20from%202025-06-22%2000-58-08.png)
+![pOc](https://github.com/MohandAcherir/Writeups/blob/main/IEREA/pics/Screenshot%20from%202025-06-22%2000-58-08.png)
