@@ -63,7 +63,7 @@ From the source code, we can that a `win()` function is given, and in order to c
 
 So, by simply giving `0` as size, the instruction `buf[strcspn(buf, "\n")] = '\0'; ` causes a SIGSEGV because `buf` has size 0, it tries to write `\0` into `buf[strcspn(buf, "\n")]`. 
 
-![pOc](https://github.com/MohandAcherir/Writeups/blob/main/IEREA/Screenshot%20from%202025-06-22%2001-01-28.png)
+![pOc](https://github.com/MohandAcherir/Writeups/blob/main/IEREA/pics/Screenshot%20from%202025-06-22%2001-01-28.png)
 
 
 ## Stdio_studio:
