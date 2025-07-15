@@ -67,7 +67,7 @@ Let's examine the binary's code :
 
 Basically, the binary reads inputs from stdin, and displays it immediately after, nothing complicated. This loops until the provided input has length 32 and finishes with a `\x00`.
 
-IMAGE
+![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/Screenshot%20from%202025-07-15%2010-29-15.png)
 
 ## The Vulnerability :
 The vulnerability is fairly obvious looking at lines between 62 and 79:
