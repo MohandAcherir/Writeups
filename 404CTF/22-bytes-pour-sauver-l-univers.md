@@ -1,4 +1,4 @@
-# 22 bytes pour sauver l'univers
+# 404CTF - 22 bytes pour sauver l'univers
 
 **Points:** 366 \
 **Category:** Pwn
@@ -13,7 +13,7 @@
 
 ## Provided files:
 - **chall** : ELF binary that receives strings and simply outputs them.
-IMAGE checksec
+![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/Screenshot%20from%202025-05-28%2016-43-38.png)
 
 
 ## The binary's code:
