@@ -270,7 +270,7 @@ gadget 0:
 And get a shell.
 
 ### Proof of Concept
-![PoC](https://github.com/MohandAcherir/Writeups/blob/main/l3akCTF/Screenshot%20from%202025-07-12%2015-50-39.png)
+![PoC](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/Screenshot%20from%202025-05-28%2016-43-38.png)
 
 
 
