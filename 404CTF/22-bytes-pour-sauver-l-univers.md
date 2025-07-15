@@ -15,7 +15,7 @@
 - **chall** : ELF binary that receives strings and simply outputs them.
 
   
-![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/Screenshot%20from%202025-07-15%2012-19-28.png)
+![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/pics/Screenshot%20from%202025-07-15%2012-19-28.png)
 
 
 ## The binary's code:
@@ -67,7 +67,7 @@ Let's examine the binary's code :
 
 Basically, the binary reads inputs from stdin, and displays it immediately after, nothing complicated. This loops until the provided input has length 32 and finishes with a `\x00`.
 
-![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/Screenshot%20from%202025-07-15%2010-29-15.png)
+![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/pics/Screenshot%20from%202025-07-15%2010-29-15.png)
 
 ## The Vulnerability :
 The vulnerability is fairly obvious looking at lines between 62 and 79:
@@ -271,7 +271,7 @@ gadget 0:
 
 And get a shell.
 
-![PoC](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/Screenshot%20from%202025-05-28%2016-43-38.png)
+![PoC](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/pics/Screenshot%20from%202025-05-28%2016-43-38.png)
 
 
 ### Proof of Concept
