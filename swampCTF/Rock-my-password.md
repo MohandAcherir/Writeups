@@ -10,7 +10,7 @@
 [This challenge uses multiple layers of hashing, but more hashing doesn't mean more security.]
 
 ---
-![Res](./pics/Screenshot%202025-07-16%20215213.png)
+![Res](./pics/Screenshot%202025-07-16%20222530.png)
 
 ## Analysis:
 The challenge's description says it all: we need to use the famous `rockyou.txt` wordlist and apply for each candidate the hashing functions sequence:
