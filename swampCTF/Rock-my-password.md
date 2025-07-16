@@ -10,10 +10,10 @@
 [This challenge uses multiple layers of hashing, but more hashing doesn't mean more security.]
 
 ---
-IMAGEEE
+![Res](./pics/Screenshot%202025-07-16%20215213.png)
 
 ## Analysis:
-The challenge's description says it all: we need to use the famous `rockyou.txt` wordlist and apply for each candidate the hashing functions sequence:\
+The challenge's description says it all: we need to use the famous `rockyou.txt` wordlist and apply for each candidate the hashing functions sequence:
 - MD5 (100 times)
 - SHA-256 (100 times)
 - SHA-512 (100 times)
@@ -21,7 +21,7 @@ and compare each time with the given hash.
 
 ## Result:
 
-IMAGE
+![Res](./pics/Screenshot%202025-07-16%20221840.png)
 
 ### Proof of Concept
 
