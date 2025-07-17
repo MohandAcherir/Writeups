@@ -1,6 +1,5 @@
 # smileyCTF - Babyrop
 
-**Points:** 200 \
 **Category:** Pwn
 
 ---
@@ -18,7 +17,7 @@
 
 Protections on the binary:
 
-![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/pics/Screenshot%20from%202025-07-16%2001-42-43.png)
+![Checksec](./pics/Screenshot%20from%202025-07-17%2012-01-25.png)
 
 ## First look at `vuln`:
 `vuln` reads user's input from stdin, the displays it back, and that's all it.
