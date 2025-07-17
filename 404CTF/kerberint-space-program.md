@@ -18,7 +18,7 @@
 
 Protections on the binary:
 
-![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/pics/Screenshot%20from%202025-07-16%2001-42-43.png)
+![Checksec](./pics/Screenshot%20from%202025-07-16%2001-42-43.png)
 
 ## The binary's code:
 
@@ -99,7 +99,7 @@ void free_user_rocket() {
 
 The program is quite straightfowrd; it creates/edits/displays rockets using the structure `struct rocket` which is composed of a price(`int`), a name (`char[0x10]`) and a description(`char*`). 
 
-![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/pics/Screenshot%20from%202025-07-15%2010-29-15.png)
+![Checksec](./pics/Screenshot%20from%202025-07-15%2010-29-15.png)
 
 ## The Vulnerability :
 The vulnerability lies in the `take_input(char *buf, size_t len)` function, which is supposed to get at most `len` characters, but looking at the loop:
@@ -180,7 +180,7 @@ p.sendline(b"6") # Trigger
 ```
 `free("/bin/sh")` = `system("/bin/sh")` which gives a shell.
 
-![Checksec](https://github.com/MohandAcherir/Writeups/blob/main/404CTF/pics/Screenshot%20from%202025-05-25%2023-25-15.png)
+![Checksec](./pics/Screenshot%20from%202025-05-25%2023-25-15.png)
 
 
 ### Proof of Concept
